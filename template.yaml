@@ -113,7 +113,7 @@ spec:
   output:
     links:
       - title: Repository
-        url: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
+        url: "dev.azure.com?owner=${{ parameters.owner }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
