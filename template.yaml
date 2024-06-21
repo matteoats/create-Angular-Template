@@ -1,101 +1,83 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-angular-app-template-azure
-  title: Create Angular App Template (Azure)
-  description: Create a new Angular website project with Azure repository
-  tags:
-    - angular
-    - azure
+  name: azure-repo-demo
+  title: Azure Repository Test
+  description: Clone and push to an Azure repository example.
 spec:
-  owner: web@example.com
-  type: website
+  owner: parfuemerie-douglas
+  type: service
+
   parameters:
-    - title: Provide some simple information
+    - title: Fill in some steps
       required:
-        - component_id
+        - name
         - owner
-        - organization
-        - project
-        - repoName
-        - authorEmail  # New parameter for author's email
-        - authorName   # New parameter for author's name
       properties:
-        workspace:
-          title: Workspace
+        name:
+          title: Project name
           type: string
-          description: La mia Workspace.
-        component_id:
-          title: Name
-          type: string
-          description: Unique name of the component
+          description: Choose a unique project name.
           ui:field: EntityNamePicker
-        description:
-          title: Description
-          type: string
-          description: Help others understand what this website is for.
+          ui:autofocus: true
         owner:
           title: Owner
           type: string
-          description: Owner of the component
-        organization:
-          title: Azure DevOps Organization
-          type: string
-          description: The Azure DevOps organization
-        project:
-          title: Azure DevOps Project
-          type: string
-          description: The Azure DevOps project
-        repoName:
-          title: Repository Name
-          type: string
-          description: The name of the repository to create
-        authorEmail:   # New parameter
-          title: Author Email
-          type: string
-          description: Email address of the repository author
-        authorName:    # New parameter
-          title: Author Name
-          type: string
-          description: Name of the repository author
+          description: Select an owner for the Backstage component.
+          ui:field: OwnerPicker
+          ui:options:
+            allowedKinds:
+              - Group
+
   steps:
-    - id: template
-      name: Fetch Skeleton + Template
+    - id: cloneAzureRepo
+      name: Clone Azure Repo
+      action: azure:repo:clone
+      input:
+        remoteUrl: "https://<MY_AZURE_ORGANIZATION>@dev.azure.com/<MY_AZURE_ORGANIZATION>/<MY_AZURE_PROJECT>/_git/<MY_AZURE_REPOSITORY>"
+        branch: "main"
+        targetPath: ./sub-directory
+
+    - id: fetch
+      name: Template Skeleton
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutTemplating:
-          - .github/workflows/*
+        targetPath: ./sub-directory
         values:
-          component_id: ${{ parameters.component_id }}
-          description: ${{ parameters.description }}
-          destination: ${{ parameters.repoName }}
+          name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
-          organization: ${{ parameters.organization }}
-          project: ${{ parameters.project }}
-          authorEmail: ${{ parameters.authorEmail }}  # Pass author email
-          authorName: ${{ parameters.authorName }}    # Pass author name
-    - id: publish
-      name: Publish to Azure
-      action: publish:azure
+
+    - id: pushAzureRepo
+      name: Push to Remote Azure Repo
+      action: azure:repo:push
       input:
-        description: This is ${{ parameters.component_id }}
-        repoUrl: dev.azure.com/${{ parameters.owner }}/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}
-        gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
-        gitAuthorName: ${{ parameters.authorName }}    # Pass author name
-        token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
-        gitCommitMessage: "Initial commit for ${{ parameters.component_id }}"
-        defaultBranch: main
+        branch: <MY_AZURE_REPOSITORY_BRANCH>
+        sourcePath: ./sub-directory
+        gitCommitMessage: Add ${{ parameters.name }} project files
+
+    - id: pullRequestAzureRepo
+      name: Create a Pull Request to Azure Repo
+      action: azure:repo:pr
+      input:
+        sourceBranch: <MY_AZURE_REPOSITORY_BRANCH>
+        targetBranch: "main"
+        repoId: <MY_AZURE_REPOSITORY>
+        title: ${{ parameters.name }}
+        project: <MY_AZURE_PROJECT>
+        supportsIterations: false
+
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/skeleton/catalog-info.yaml"
+        repoContentsUrl: "dev.azure.com?owner=<MY_AZURE_PROJECT>&repo=<MY_AZURE_REPOSITORY>&organization=<MY_AZURE_ORGANIZATION>&version=<MY_AZURE_REPOSITORY_BRANCH>"
+        catalogInfoPath: "/catalog-info.yaml"
+
   output:
     links:
       - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
+        url: "dev.azure.com?owner=<MY_AZURE_PROJECT>&repo=<MY_AZURE_REPOSITORY>&organization=<MY_AZURE_ORGANIZATION>"
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
