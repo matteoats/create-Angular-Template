@@ -89,7 +89,7 @@ spec:
       action: azure:repo:push
       input:
         branch: "main"
-        sourcePath: ./sub-directory
+        sourcePath: ./skeleton
         gitCommitMessage: Add project files
 
 #    - id: publish
