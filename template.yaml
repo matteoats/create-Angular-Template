@@ -59,13 +59,13 @@ spec:
           type: string
           description: Name of the repository author
   steps:
-    - id: cloneAzureRepo
-      name: Clone Azure Repo
-      action: azure:repo:clone
-      input:
-        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
-        branch: "main"
-        targetPath: ./sub-directory
+#    - id: cloneAzureRepo
+#      name: Clone Azure Repo
+#      action: azure:repo:clone
+#      input:
+#        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+#        branch: "main"
+#        targetPath: ./sub-directory
         
     - id: template
       name: Fetch Skeleton + Template
