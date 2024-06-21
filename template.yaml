@@ -69,7 +69,7 @@ spec:
         allowedHosts:
           - dev.azure.com
         description: This is ${{ parameters.component_id }}
-        repoUrl: https://dev.azure.com/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_url }}
+        repoUrl: dev.azure.com/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_url }}
 
     - id: register
       name: Register
