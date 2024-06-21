@@ -21,6 +21,10 @@ spec:
         - authorEmail  # New parameter for author's email
         - authorName   # New parameter for author's name
       properties:
+        workspace:
+          title: Workspace
+          type: string
+          description: La mia Workspace.
         component_id:
           title: Name
           type: string
