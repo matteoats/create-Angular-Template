@@ -80,7 +80,7 @@ spec:
       action: publish:azure
       input:
         description: This is ${{ parameters.component_id }}
-        repoUrl: https://dev.azure.com/${{ parameters.owner }}/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_name }}
+        repoUrl: dev.azure.com/${{ parameters.owner }}/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_name }}
         gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
         gitAuthorName: ${{ parameters.authorName }}    # Pass author name
         token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
