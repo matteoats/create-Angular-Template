@@ -80,13 +80,13 @@ spec:
       action: publish:azure
       input:
         description: This is ${{ parameters.component_id }}
-        repoUrl: dev.azure.com/${{ parameters.organization }}/
+        repoUrl: https://dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}
         allowedHosts:
           - dev.azure.com
-        authorEmail: ${{ parameters.authorEmail }}  # Pass author email
-        authorName: ${{ parameters.authorName }}    # Pass author name
+        gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
+        gitAuthorName: ${{ parameters.authorName }}    # Pass author name
         token: ${{ AZURE_DEVOPS_TOKEN }}
-        commitMessage: "Initial commit for ${{ parameters.component_id }}"
+        gitCommitMessage: "Initial commit for ${{ parameters.component_id }}"
         defaultBranch: main
     - id: register
       name: Register
