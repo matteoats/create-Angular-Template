@@ -108,7 +108,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}&version=main"
+        repoContentsUrl: "dev.azure.com?owner=${{ parameters.owner }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}&version=main"
         catalogInfoPath: "/skeleton/catalog-info.yaml"
   output:
     links:
