@@ -1,25 +1,21 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-angular-app-template-azure
-  title: Create Angular App Template (Azure)
-  description: Create a new Angular website project with Azure repository
+  name: create-react-app-azure-template
+  title: Create React App Template for Azure DevOps
+  description: Create a new CRA website project hosted on Azure DevOps
   tags:
-    - angular
-    - azure
+    - react
+    - cra
 spec:
   owner: web@example.com
   type: website
   parameters:
-    - title: Provide some simple information
+    - title: Provide the necessary information
       required:
         - component_id
         - owner
-        - organization
-        - project
-        - repoName
-        - authorEmail  # New parameter for author's email
-        - authorName   # New parameter for author's name
+        - repoUrl
       properties:
         component_id:
           title: Name
@@ -38,60 +34,43 @@ spec:
           ui:options:
             allowedKinds:
               - Group
-        organization:
-          title: Azure DevOps Organization
+        repoUrl:
+          title: Repository Location
           type: string
-          description: The Azure DevOps organization
-        project:
-          title: Azure DevOps Project
-          type: string
-          description: The Azure DevOps project
-        repoName:
-          title: Repository Name
-          type: string
-          description: The name of the repository to create
-        authorEmail:   # New parameter
-          title: Author Email
-          type: string
-          description: Email address of the repository author
-        authorName:    # New parameter
-          title: Author Name
-          type: string
-          description: Name of the repository author
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - dev.azure.com
   steps:
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutTemplating:
-          - .github/workflows/*
+        copyWithoutRender:
+          - .azure-pipelines/*
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoName }}
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
           owner: ${{ parameters.owner }}
-          organization: ${{ parameters.organization }}
-          project: ${{ parameters.project }}
-          authorEmail: ${{ parameters.authorEmail }}  # Pass author email
-          authorName: ${{ parameters.authorName }}    # Pass author name
+
     - id: publish
-      name: Publish to Azure
+      name: Publish
       action: publish:azure
       input:
+        allowedHosts:
+          - dev.azure.com
         description: This is ${{ parameters.component_id }}
-        repoUrl: dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}
-        gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
-        gitAuthorName: ${{ parameters.authorName }}    # Pass author name
-        token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
-        gitCommitMessage: "Initial commit for ${{ parameters.component_id }}"
-        defaultBranch: main
+        repoUrl: ${{ parameters.repoUrl }}
+
     - id: register
       name: Register
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/skeleton/catalog-info.yaml"
+        catalogInfoPath: "/catalog-info.yaml"
+
   output:
     links:
       - title: Repository
