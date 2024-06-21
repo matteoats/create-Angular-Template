@@ -15,7 +15,9 @@ spec:
       required:
         - component_id
         - owner
-        - repoUrl
+        - repo_url
+        - repo_org
+        - repo_project
       properties:
         component_id:
           title: Name
@@ -34,13 +36,18 @@ spec:
           ui:options:
             allowedKinds:
               - Group
-        repoUrl:
-          title: Repository Location
+        repo_org:
+          title: Azure DevOps Organization
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - dev.azure.com
+          description: Azure DevOps organization name
+        repo_project:
+          title: Azure DevOps Project
+          type: string
+          description: Azure DevOps project name
+        repo_url:
+          title: Repository Name
+          type: string
+          description: Name of the repository to be created
   steps:
     - id: template
       name: Fetch Skeleton + Template
@@ -52,7 +59,7 @@ spec:
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          destination: ${{ parameters.repo_org }}/{{ parameters.repo_project }}/{{ parameters.repo_url }}
           owner: ${{ parameters.owner }}
 
     - id: publish
@@ -62,7 +69,7 @@ spec:
         allowedHosts:
           - dev.azure.com
         description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}
+        repoUrl: https://dev.azure.com/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_url }}
 
     - id: register
       name: Register
@@ -74,7 +81,7 @@ spec:
   output:
     links:
       - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
+        url: https://dev.azure.com/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_url }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
