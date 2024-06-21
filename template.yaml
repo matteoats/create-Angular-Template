@@ -63,7 +63,7 @@ spec:
       name: Clone Azure Repo
       action: azure:repo:clone
       input:
-        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+        remoteUrl: "https://dev.azure.com/matteomagliocchetti/prova-ang/_git/angular17"
         branch: "main"
         targetPath: ./sub-directory
         
