@@ -1,12 +1,11 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-react-app-template-azure
-  title: Create React App Template (Azure)
-  description: Create a new CRA website project with Azure repository
+  name: create-angular-app-template-azure
+  title: Create Angular App Template (Azure)
+  description: Create a new Angular website project with Azure repository
   tags:
-    - react
-    - cra
+    - angular
     - azure
 spec:
   owner: web@example.com
