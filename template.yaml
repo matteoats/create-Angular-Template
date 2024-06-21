@@ -38,10 +38,6 @@ spec:
           title: Owner
           type: string
           description: Owner of the component
-          ui:field: OwnerPicker
-          ui:options:
-            allowedKinds:
-              - Group
         organization:
           title: Azure DevOps Organization
           type: string
@@ -84,7 +80,7 @@ spec:
       action: publish:azure
       input:
         description: This is ${{ parameters.component_id }}
-        repoUrl: dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}
+        repoUrl: https://dev.azure.com/${{ parameters.owner }}/${{ parameters.repo_org }}/${{ parameters.repo_project }}/_git/${{ parameters.repo_name }}
         gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
         gitAuthorName: ${{ parameters.authorName }}    # Pass author name
         token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
