@@ -84,6 +84,15 @@ spec:
           authorEmail: ${{ parameters.authorEmail }}  # Pass author email
           authorName: ${{ parameters.authorName }}    # Pass author name
     
+    - id: initRepo
+      name: Initialize Repository
+      action: azure:repo:init
+      input:
+        organization: ${{ parameters.organization }}
+        project: ${{ parameters.project }}
+        repoName: ${{ parameters.repoName }}
+        defaultBranch: main
+    
     - id: pushAzureRepo
       name: Push to Remote Azure Repo
       action: azure:repo:push
