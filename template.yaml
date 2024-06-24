@@ -31,6 +31,14 @@ spec:
           type: string
           description: Unique name of the component
           ui:field: EntityNamePicker
+        target_branch:
+          title: target_branch
+          type: string
+          description: Help others understand what this website is for.
+        source_branch:
+          title: source_branch
+          type: string
+          description: Help others understand what this website is for.
         description:
           title: Description
           type: string
@@ -91,8 +99,8 @@ spec:
       name: Create a Pull Request to Azure Repo
       action: azure:repo:pr
       input:
-        sourceBranch: "main"
-        targetBranch: "main"
+        sourceBranch: ${{ parameters.source_branch }}
+        targetBranch: ${{ parameters.target_branch }}
         repoId: ${{ parameters.Repo_Name_for_PULL }}
         title: ${{ parameters.Repo_Name_for_PULL }}
         project: ${{ parameters.project }}
