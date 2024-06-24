@@ -52,6 +52,7 @@ spec:
         branch: "${{ parameters.targetBranch }}"
         sourcePath: ./sub-directory-origin
         gitCommitMessage: "Update project files"
+        force: true  # Sovrascrive la storia del branch remoto
 
   output:
     links:
