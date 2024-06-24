@@ -66,7 +66,7 @@ spec:
         sourceBranch: "main"
         targetBranch: "main"
         repoId: ${{ parameters.repoName }}
-        title: ${{ parameters.name }}
+        title: ${{ parameters.component_id }}
         project: ${{ parameters.project }}
         supportsIterations: false
 
