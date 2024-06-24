@@ -88,7 +88,7 @@ spec:
       name: Push to Remote Azure Repo
       action: azure:repo:push
       input:
-        remoteUrl: "https://dev.azure.com/matteomagliocchetti/prova-ang/_git/angular17"
+        remoteUrl: "https://dev.azure.com/matteomagliocchetti/prova-ang/_git/fake-repo"
         branch: "main"
         sourcePath: ./sub-directory
         gitCommitMessage: Add project files
