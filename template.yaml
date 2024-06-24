@@ -12,21 +12,22 @@ spec:
   type: website
   parameters:
     - title: Provide some simple information
-      required:
-        - component_id
-        - owner
-        - organization
-        - project
-        - repoName
-        - authorEmail  # New parameter for author's email
-        - authorName   # New parameter for author's name
+#      required:
+#        - component_id
+#        - owner
+#        - organization
+#        - project
+#        - repoName
+#        - authorEmail  # New parameter for author's email
+#        - authorName   # New parameter for author's name
       properties:
-        workspace:
-          title: Workspace
-          type: string
-          description: La mia Workspace.
         component_id:
-          title: Name
+          title: Name Component
+          type: string
+          description: Unique name of the component
+          ui:field: EntityNamePicker
+        Repo_Name_for_PULL:
+          title: NamePull
           type: string
           description: Unique name of the component
           ui:field: EntityNamePicker
@@ -47,7 +48,7 @@ spec:
           type: string
           description: The Azure DevOps project
         repoName:
-          title: Repository Name
+          title: Repository Name For Clone 
           type: string
           description: The name of the repository to create
         authorEmail:   # New parameter
@@ -64,7 +65,7 @@ spec:
       name: Clone Azure Repo
       action: azure:repo:clone
       input:
-        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.Repo_Name_for_PULL }}"
         branch: "main"
         targetPath: ./sub-directory
         
@@ -73,6 +74,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
+        targetPath: ./sub-directory
         copyWithoutTemplating:
           - .github/workflows/*
         values:
@@ -91,8 +93,8 @@ spec:
       input:
         sourceBranch: "main"
         targetBranch: "main"
-        repoId: ${{ parameters.repoName }}
-        title: ${{ parameters.component_id }}
+        repoId: ${{ parameters.Repo_Name_for_PULL }}
+        title: ${{ parameters.Repo_Name_for_PULL }}
         project: ${{ parameters.project }}
         supportsIterations: false
     
@@ -127,4 +129,4 @@ spec:
         url: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
       - title: Open in catalog
         icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+        entityRef: ${{ steps.register.output.entityRef }}  
