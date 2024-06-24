@@ -17,9 +17,7 @@ spec:
         - owner
         - organization
         - project
-        - repoName
-        - authorEmail  
-        - authorName   
+        - repoName  
       properties:
         component_id:
           title: Name Component
@@ -80,10 +78,10 @@ spec:
           name: ${{ parameters.name }}
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-#          destination: ${{ parameters.repoName }}
+          repoName: ${{ parameters.repoName }}
           owner: ${{ parameters.owner }}
-#          organization: ${{ parameters.organization }}
-#          project: ${{ parameters.project }}
+          organization: ${{ parameters.organization }}
+          project: ${{ parameters.project }}
 #          authorEmail: ${{ parameters.authorEmail }}  
 #          authorName: ${{ parameters.authorName }}
     
