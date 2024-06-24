@@ -1,145 +1,55 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-angular-app-template-azure
-  title: Create Angular App Template (Azure)
-  description: Create a new Angular website project with Azure repository
+  name: clone-and-push-template
+  title: Clone and Push Template (Azure)
+  description: Clone a project from one Azure DevOps repository and push it to another Azure DevOps repository
   tags:
-    - angular
     - azure
 spec:
   owner: web@example.com
   type: website
   parameters:
-    - title: Provide some simple information
-#      required:
-#        - component_id
-#        - owner
-#        - organization
-#        - project
-#        - repoName
-#        - authorEmail  # New parameter for author's email
-#        - authorName   # New parameter for author's name
+    - title: Provide repository information
       properties:
-        component_id:
-          title: Name Component
+        sourceRepoUrl:
+          title: Source Repository URL
           type: string
-          description: Unique name of the component
-          ui:field: EntityNamePicker
-        Repo_Name_for_PULL:
-          title: NamePull
+          description: URL of the source Azure DevOps repository to clone from
+        sourceBranch:
+          title: Source Branch
           type: string
-          description: Unique name of the component
-          ui:field: EntityNamePicker
-        titlePull:
-          title: title per pull
+          description: Branch of the source repository to clone
+        targetRepoUrl:
+          title: Target Repository URL
           type: string
-          description: Unique name of the component
-          ui:field: EntityNamePicker
-        target_branch:
-          title: target_branch
+          description: URL of the target Azure DevOps repository to push to
+        targetBranch:
+          title: Target Branch
           type: string
-          description: Help others understand what this website is for.
-        source_branch:
-          title: source_branch
-          type: string
-          description: Help others understand what this website is for.
-        description:
-          title: Description
-          type: string
-          description: Help others understand what this website is for.
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component
-        organization:
-          title: Azure DevOps Organization
-          type: string
-          description: The Azure DevOps organization
-        project:
-          title: Azure DevOps Project
-          type: string
-          description: The Azure DevOps project
-        repoName:
-          title: Repository Name For Clone 
-          type: string
-          description: The name of the repository to create
-        authorEmail:   # New parameter
-          title: Author Email
-          type: string
-          description: Email address of the repository author
-        authorName:    # New parameter
-          title: Author Name
-          type: string
-          description: Name of the repository author
+          description: Branch of the target repository to push
   steps:
-  
     - id: cloneAzureRepo
       name: Clone Azure Repo
       action: azure:repo:clone
       input:
-        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.Repo_Name_for_PULL }}"
-        branch: "main"
-        targetPath: ./sub-directory
-        
-    - id: template
-      name: Fetch Skeleton + Template
-      action: fetch:template
-      input:
-        url: ./skeleton
-        targetPath: ./sub-directory
-        copyWithoutTemplating:
-          - .github/workflows/*
-        values:
-          component_id: ${{ parameters.component_id }}
-          description: ${{ parameters.description }}
-          destination: ${{ parameters.repoName }}
-          owner: ${{ parameters.owner }}
-          organization: ${{ parameters.organization }}
-          project: ${{ parameters.project }}
-          authorEmail: ${{ parameters.authorEmail }}  # Pass author email
-          authorName: ${{ parameters.authorName }}    # Pass author name
-          
-    - id: pullRequestAzureRepo
-      name: Create a Pull Request to Azure Repo
-      action: azure:repo:pr
-      input:
-        sourceBranch: ${{ parameters.source_branch }}
-        targetBranch: ${{ parameters.target_branch }}
-        repoId: ${{ parameters.titlePull }}
-        title: ${{ parameters.titlePull }}
-        project: ${{ parameters.project }}
-        supportsIterations: false
+        remoteUrl: "${{ parameters.sourceRepoUrl }}"
+        branch: "${{ parameters.sourceBranch }}"
+        targetPath: ./cloned-project
     
     - id: pushAzureRepo
       name: Push to Remote Azure Repo
       action: azure:repo:push
       input:
-        branch: "main"
-        sourcePath: ./sub-directory
-        gitCommitMessage: Add project files
+        branch: "${{ parameters.targetBranch }}"
+        sourcePath: ./cloned-project
+        remoteUrl: "${{ parameters.targetRepoUrl }}"
+        gitCommitMessage: "Update project files"
 
-#    - id: publish
-#      name: Publish to Azure
-#      action: publish:azure
-#      input:
-#        description: This is ${{ parameters.component_id }}
-#        repoUrl: dev.azure.com/${{ parameters.owner }}/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}
-#        gitAuthorEmail: ${{ parameters.authorEmail }}  # Pass author email
-#        gitAuthorName: ${{ parameters.authorName }}    # Pass author name
-#        token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
-#        gitCommitMessage: "Initial commit for ${{ parameters.component_id }}"
-#        defaultBranch: main
-    - id: register
-      name: Register
-      action: catalog:register
-      input:
-        repoContentsUrl: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}&version=main"
-        catalogInfoPath: "/skeleton/catalog-info.yaml"
   output:
     links:
-      - title: Repository
-        url: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}  
+      - title: Target Repository
+        url: "${{ parameters.targetRepoUrl }}"
+      - title: Open in Azure DevOps
+        icon: azure
+        url: "${{ parameters.targetRepoUrl }}"
