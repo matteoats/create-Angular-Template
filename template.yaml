@@ -29,21 +29,28 @@ spec:
           type: string
           description: Branch of the target repository to push
   steps:
-    - id: cloneAzureRepo
-      name: Clone Azure Repo
+    - id: cloneSourceRepo
+      name: Clone Source Repository
       action: azure:repo:clone
       input:
         remoteUrl: "${{ parameters.sourceRepoUrl }}"
         branch: "${{ parameters.sourceBranch }}"
-        targetPath: ./cloned-project
-    
-    - id: pushAzureRepo
+        targetPath: ./sub-directory-origin
+
+    - id: cloneTargetRepo
+      name: Clone Target Repository
+      action: azure:repo:clone
+      input:
+        remoteUrl: "${{ parameters.targetRepoUrl }}"
+        branch: "${{ parameters.targetBranch }}"
+        targetPath: ./sub-directory-des
+
+    - id: pushToTargetRepo
       name: Push to Remote Azure Repo
       action: azure:repo:push
       input:
         branch: "${{ parameters.targetBranch }}"
-        sourcePath: ./cloned-project
-        remoteUrl: "${{ parameters.targetRepoUrl }}"
+        sourcePath: ./sub-directory-origin
         gitCommitMessage: "Update project files"
 
   output:
