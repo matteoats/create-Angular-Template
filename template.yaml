@@ -111,8 +111,8 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
-        catalogInfoPath: "catalog-info.yaml"
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
       - title: Repository
