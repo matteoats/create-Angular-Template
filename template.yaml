@@ -111,12 +111,12 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+        repoContentsUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}?path=%2F"
         catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
       - title: Repository
-        url: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+        url: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}?path=%2F"
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}  
