@@ -74,7 +74,7 @@ spec:
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
-        url: "https://matteomagliocchetti@dev.azure.com/matteomagliocchetti/prova-ang/_git/angular17"
+        url: "https://matteomagliocchetti@dev.azure.com/matteomagliocchetti/prova-ang/_git/angular"
         targetPath: ./sub-directory
         values:
           name: ${{ parameters.name }}
