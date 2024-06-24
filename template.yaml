@@ -47,14 +47,13 @@ spec:
 
     
         
-    - id: listSubDirectoryOrigin
-      name: List contents of sub-directory-origin
-      action: script
-      input:
-        scriptType: bash
+    - task: Bash@3
+      displayName: 'List sub-directory-origin'
+      inputs:
+        targetType: 'inline'
         script: |
           ls -al ./sub-directory-origin
-
+      
     - id: listSubDirectoryDes
       name: List contents of sub-directory-des
       action: script
