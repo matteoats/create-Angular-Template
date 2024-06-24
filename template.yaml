@@ -59,13 +59,24 @@ spec:
           type: string
           description: Name of the repository author
   steps:
-    - id: cloneAzureRepo
-      name: Clone Azure Repo
-      action: azure:repo:clone
+    - id: pullRequestAzureRepo
+      name: Create a Pull Request to Azure Repo
+      action: azure:repo:pr
       input:
-        remoteUrl: "https://dev.azure.com/matteomagliocchetti/prova-ang/_git/angular17"
-        branch: "main"
-        targetPath: ./sub-directory
+        sourceBranch: "main"
+        targetBranch: "main"
+        repoId: ${{ parameters.repoName }}
+        title: ${{ parameters.name }}
+        project: ${{ parameters.project }}
+        supportsIterations: false
+
+#    - id: cloneAzureRepo
+#      name: Clone Azure Repo
+#      action: azure:repo:clone
+#      input:
+#        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+#        branch: "main"
+#        targetPath: ./sub-directory
         
     - id: template
       name: Fetch Skeleton + Template
@@ -88,7 +99,6 @@ spec:
       name: Push to Remote Azure Repo
       action: azure:repo:push
       input:
-        remoteUrl: "https://dev.azure.com/matteomagliocchetti/prova-ang/_git/fake-repo"
         branch: "main"
         sourcePath: ./sub-directory
         gitCommitMessage: Add project files
@@ -108,12 +118,12 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: "dev.azure.com?owner=${{ parameters.owner }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}&version=main"
+        repoContentsUrl: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}&version=main"
         catalogInfoPath: "/skeleton/catalog-info.yaml"
   output:
     links:
       - title: Repository
-        url: "dev.azure.com?owner=${{ parameters.owner }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
+        url: "dev.azure.com?owner=${{ parameters.project }}&repo=${{ parameters.repoName }}&organization=${{ parameters.organization }}"
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
