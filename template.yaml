@@ -45,14 +45,7 @@ spec:
         branch: "main"
         targetPath: ./sub-directory-des
 
-    - id: pushToTargetRepo
-      name: Push to Remote Azure Repo
-      action: azure:repo:push
-      input:
-        branch: "${{ parameters.targetBranch }}"
-        sourcePath: ./sub-directory-origin
-        gitCommitMessage: "Update project files"
-        force: true  # Sovrascrive la storia del branch remoto
+    
         
     - id: listSubDirectoryOrigin
       name: List contents of sub-directory-origin
