@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: create-angular-app-template-azure
+  name: "create-angular-app-template-azure"
   title: Create Angular Template (Azure)
   description: Create a new Angular website project with Azure repository
   tags:
@@ -111,7 +111,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.pushAzureRepo.output.repoContentsUrl }}
+        repoContentsUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
         catalogInfoPath: "/catalog-info.yaml"
   output:
     links:
