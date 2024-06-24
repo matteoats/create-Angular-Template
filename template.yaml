@@ -78,8 +78,8 @@ spec:
         targetPath: ./sub-directory
         values:
           name: ${{ parameters.name }}
-#          component_id: ${{ parameters.component_id }}
-#          description: ${{ parameters.description }}
+          component_id: ${{ parameters.component_id }}
+          description: ${{ parameters.description }}
 #          destination: ${{ parameters.repoName }}
           owner: ${{ parameters.owner }}
 #          organization: ${{ parameters.organization }}
