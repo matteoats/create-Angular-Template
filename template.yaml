@@ -59,24 +59,14 @@ spec:
           type: string
           description: Name of the repository author
   steps:
-    - id: pullRequestAzureRepo
-      name: Create a Pull Request to Azure Repo
-      action: azure:repo:pr
+  
+    - id: cloneAzureRepo
+      name: Clone Azure Repo
+      action: azure:repo:clone
       input:
-        sourceBranch: "main"
-        targetBranch: "main"
-        repoId: ${{ parameters.repoName }}
-        title: ${{ parameters.component_id }}
-        project: ${{ parameters.project }}
-        supportsIterations: false
-
-#    - id: cloneAzureRepo
-#      name: Clone Azure Repo
-#      action: azure:repo:clone
-#      input:
-#        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
-#        branch: "main"
-#        targetPath: ./sub-directory
+        remoteUrl: "https://${{ parameters.organization }}@dev.azure.com/${{ parameters.organization }}/${{ parameters.project }}/_git/${{ parameters.repoName }}"
+        branch: "main"
+        targetPath: ./sub-directory
         
     - id: template
       name: Fetch Skeleton + Template
@@ -94,6 +84,17 @@ spec:
           project: ${{ parameters.project }}
           authorEmail: ${{ parameters.authorEmail }}  # Pass author email
           authorName: ${{ parameters.authorName }}    # Pass author name
+          
+    - id: pullRequestAzureRepo
+      name: Create a Pull Request to Azure Repo
+      action: azure:repo:pr
+      input:
+        sourceBranch: "main"
+        targetBranch: "main"
+        repoId: ${{ parameters.repoName }}
+        title: ${{ parameters.component_id }}
+        project: ${{ parameters.project }}
+        supportsIterations: false
     
     - id: pushAzureRepo
       name: Push to Remote Azure Repo
