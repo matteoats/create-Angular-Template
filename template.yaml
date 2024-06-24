@@ -53,6 +53,22 @@ spec:
         sourcePath: ./sub-directory-origin
         gitCommitMessage: "Update project files"
         force: true  # Sovrascrive la storia del branch remoto
+        
+    - id: listSubDirectoryOrigin
+      name: List contents of sub-directory-origin
+      action: script
+      input:
+        scriptType: bash
+        script: |
+          ls -al ./sub-directory-origin
+
+    - id: listSubDirectoryDes
+      name: List contents of sub-directory-des
+      action: script
+      input:
+        scriptType: bash
+        script: |
+          ls -al ./sub-directory-des
 
   output:
     links:
