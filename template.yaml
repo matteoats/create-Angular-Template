@@ -31,7 +31,7 @@ spec:
           type: string
           description: Unique name of the component
           ui:field: EntityNamePicker
-        title:
+        titlePull:
           title: title per pull
           type: string
           description: Unique name of the component
@@ -106,8 +106,8 @@ spec:
       input:
         sourceBranch: ${{ parameters.source_branch }}
         targetBranch: ${{ parameters.target_branch }}
-        repoId: ${{ parameters.title }}
-        title: ${{ parameters.title }}
+        repoId: ${{ parameters.titlePull }}
+        title: ${{ parameters.titlePull }}
         project: ${{ parameters.project }}
         supportsIterations: false
     
