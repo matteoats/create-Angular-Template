@@ -42,7 +42,7 @@ spec:
       action: azure:repo:clone
       input:
         remoteUrl: "${{ parameters.targetRepoUrl }}"
-        branch: "${{ parameters.targetBranch }}"
+        branch: "main"
         targetPath: ./sub-directory-des
 
     - id: pushToTargetRepo
